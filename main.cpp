@@ -3,9 +3,17 @@
 
 #include <QMessageBox>
 #include <QSharedMemory>
+#include "gpuinfo.h"
 
 int main(int argc, char *argv[])
 {
+    if (GPUInfo::getInstance()->getGPUNum() == 0)
+    {
+        QMessageBox::critical(0, QObject::tr("GPUMonitor"),
+                              QObject::tr("Couldn't detect any NVIDIA GPU on this system."));
+        return 1;
+    }
+
     QApplication a(argc, argv);
     if (!QSystemTrayIcon::isSystemTrayAvailable())
     {

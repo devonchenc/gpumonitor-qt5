@@ -27,10 +27,7 @@ private slots:
     void showTopmost();
 
 private:
-    int getGPUInfo();
-    void updateGPUInfo();
     void updateControl();
-    QStringList getCommandOutput();
 
     void createIconGroupBox();
     void createActions();
@@ -55,15 +52,6 @@ private:
     QMenu *trayIconMenu;
 
     int gpuNum;
-    QStringList gpuName;
-    QVector<int> gpuNameLineVector;
-    QVector<int> memoryTotalVector;
-    QVector<int> memoryUsedVector;
-    QVector<int> temperatureVector;
-    QVector<float> powerDrawVector;
-    QVector<float> powerLimitVector;
-    QVector<int> gpuUtilVector;
-    QVector<int> memoryUtilVector;
 
     int timerID;
 };
