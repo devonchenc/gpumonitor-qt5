@@ -7,12 +7,10 @@ class GPUInfo
 {
 public:
     static GPUInfo* getInstance();
-    static void cleanUp();
 
     static void updateInfo();
 
     static int getGPUNum()                          { return gpuNum; }
-
     static const QStringList& getGPUName()          { return gpuName; }
     static QVector<int>& getMemoryTotalVector()     { return memoryTotalVector; }
     static QVector<int>& getMemoryUsedlVector()     { return memoryUsedVector; }

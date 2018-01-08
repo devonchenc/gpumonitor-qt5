@@ -27,15 +27,6 @@ GPUInfo* GPUInfo::getInstance()
     return instance;
 }
 
-void GPUInfo::cleanUp()
-{
-    printf("cleanUp");
-    if (instance != Q_NULLPTR)
-    {
-        delete instance;
-    }
-}
-
 int GPUInfo::getInfo()
 {
     QStringList strVector = getCommandOutput();

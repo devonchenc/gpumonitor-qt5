@@ -72,7 +72,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::timerEvent(QTimerEvent *event)
 {
-    if(event->timerId() == timerID)
+    if (event->timerId() == timerID)
     {
         GPUInfo::getInstance()->updateInfo();
 
@@ -244,7 +244,7 @@ void MainWindow::trayActivated(QSystemTrayIcon::ActivationReason reason)
 void MainWindow::showTopmost()
 {
     bool checked = topmostAction->isChecked();
-    if(checked)
+    if (checked)
     {
         setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
         show();
