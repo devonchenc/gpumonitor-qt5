@@ -87,6 +87,8 @@ void MainWindow::timerEvent(QTimerEvent *event)
 int MainWindow::getGPUInfo()
 {
     QStringList strVector = getCommandOutput();
+    if (strVector.size() == 0)
+        return 0;
 
     for (int i = 0; i < strVector.size(); i++)
     {
@@ -266,10 +268,10 @@ void MainWindow::updateControl()
 QStringList MainWindow::getCommandOutput()
 {
     QStringList strVector;
-#ifdef  __linux
-    FILE* pp = popen("nvidia-smi -q", "r");
-#else
+#ifdef _WIN32
     FILE* pp = _popen("C:\\\"Program Files\"\\\"NVIDIA Corporation\"\\NVSMI\\nvidia-smi.exe -q", "r");
+#else
+    FILE* pp = popen("nvidia-smi -q", "r");
 #endif
     if (!pp)
         return strVector;
@@ -284,10 +286,10 @@ QStringList MainWindow::getCommandOutput()
         }
         strVector.append(tmp);
     }
-#ifdef  __linux
-    pclose(pp);
-#else
+#ifdef _WIN32
     _pclose(pp);
+#else
+    pclose(pp);
 #endif
 
     return strVector;
@@ -400,6 +402,11 @@ void MainWindow::createTrayIcon()
     connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::trayActivated);
 
     setWindowIcon(icon);
+
+    if (gpuNum == 0)
+    {
+        trayIcon->showMessage(tr("No NVIDIA GPUs"), tr("There is no NVIDIA GPUs installed in this computer."), QSystemTrayIcon::Information, 5000);
+    }
 }
 
 void MainWindow::trayActivated(QSystemTrayIcon::ActivationReason reason)
