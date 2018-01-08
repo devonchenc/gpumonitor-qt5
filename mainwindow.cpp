@@ -13,7 +13,6 @@
 
 MainWindow::MainWindow()
     : gpuGroupBox(Q_NULLPTR)
-    , nameLabel(Q_NULLPTR)
     , memoryLabel(Q_NULLPTR)
     , memoryEdit(Q_NULLPTR)
     , temperatureLabel(Q_NULLPTR)
@@ -43,10 +42,6 @@ MainWindow::~MainWindow()
     if (gpuGroupBox)
     {
         delete [] gpuGroupBox;
-    }
-    if (nameLabel)
-    {
-        delete [] nameLabel;
     }
     if (memoryLabel)
     {
@@ -301,7 +296,6 @@ void MainWindow::createIconGroupBox()
         return;
 
     gpuGroupBox = new QGroupBox*[gpuNum];
-    nameLabel = new QLabel*[gpuNum];
     memoryLabel = new QLabel*[gpuNum];
     memoryEdit = new QLineEdit*[gpuNum];
     temperatureLabel = new QLabel*[gpuNum];
@@ -313,9 +307,8 @@ void MainWindow::createIconGroupBox()
 
     for (int i = 0; i < gpuNum; i++)
     {
-        gpuGroupBox[i] = new QGroupBox(tr("GPU %1:").arg(i));
+        gpuGroupBox[i] = new QGroupBox(tr("GPU %1 : %2   ").arg(i).arg(gpuName[i]));
 
-        nameLabel[i] = new QLabel(gpuName[0]);
         memoryLabel[i] = new QLabel(tr("Memory Usage:"));
         memoryEdit[i] = new QLineEdit;
         memoryEdit[i]->setMinimumWidth(150);
@@ -338,15 +331,14 @@ void MainWindow::createIconGroupBox()
         temperatureEdit[i]->setFocusPolicy(Qt::NoFocus);
 
         QGridLayout *infoLayout = new QGridLayout;
-        infoLayout->addWidget(nameLabel[i], 0, 0);
-        infoLayout->addWidget(memoryLabel[i], 1, 0);
-        infoLayout->addWidget(memoryEdit[i], 1, 1, 1, 2);
-        infoLayout->addWidget(gpuUtilLabel[i], 1, 3, 1, 1);
-        infoLayout->addWidget(gpuUtilEdit[i], 1, 4, 1, 1);
-        infoLayout->addWidget(powerLabel[i], 2, 0);
-        infoLayout->addWidget(powerEdit[i], 2, 1, 1, 2);
-        infoLayout->addWidget(temperatureLabel[i], 2, 3, 1, 1);
-        infoLayout->addWidget(temperatureEdit[i], 2, 4, 1, 1);
+        infoLayout->addWidget(memoryLabel[i], 0, 0);
+        infoLayout->addWidget(memoryEdit[i], 0, 1, 1, 2);
+        infoLayout->addWidget(gpuUtilLabel[i], 0, 3, 1, 1);
+        infoLayout->addWidget(gpuUtilEdit[i], 0, 4, 1, 1);
+        infoLayout->addWidget(powerLabel[i], 1, 0);
+        infoLayout->addWidget(powerEdit[i], 1, 1, 1, 2);
+        infoLayout->addWidget(temperatureLabel[i], 1, 3, 1, 1);
+        infoLayout->addWidget(temperatureEdit[i], 1, 4, 1, 1);
 
         gpuGroupBox[i]->setLayout(infoLayout);
     }

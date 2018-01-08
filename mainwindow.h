@@ -37,7 +37,6 @@ private:
     void createTrayIcon();
 
     QGroupBox **gpuGroupBox;
-    QLabel **nameLabel;
     QLabel **memoryLabel;
     QLineEdit **memoryEdit;
     QLabel **temperatureLabel;
