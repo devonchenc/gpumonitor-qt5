@@ -33,3 +33,8 @@ HEADERS += \
     gpuinfo.h
 
 RESOURCES = GPUMonitor.qrc
+
+RC_FILE = GPUMonitor.rc
+
+DISTFILES += \
+    GPUMonitor.rc
