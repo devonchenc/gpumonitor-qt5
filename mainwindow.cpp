@@ -89,7 +89,7 @@ void MainWindow::updateControl()
     const QVector<int> memoryUsedVector = GPUInfo::getInstance()->getMemoryUsedlVector();
     const QVector<int> temperatureVector = GPUInfo::getInstance()->getTemperatureVector();
     const QVector<float> powerDrawVector = GPUInfo::getInstance()->getPowerDrawVector();
-    const QVector<float> powerLimitVector = GPUInfo::getInstance()->getPowerLimitVector();
+    const QVector<QString> powerLimitVector = GPUInfo::getInstance()->getPowerLimitVector();
     const QVector<int> gpuUtilVector = GPUInfo::getInstance()->getGPUUtilVector();
     const QVector<int> memoryUtilVector = GPUInfo::getInstance()->getMemoryUtilVector();
 
@@ -101,7 +101,7 @@ void MainWindow::updateControl()
         QString gpuUtil = QString("%1 %").arg(gpuUtilVector[i]);
         gpuUtilEdit[i]->setText(gpuUtil);
 
-        QString power = QString("%1 W / %2 W").arg(powerDrawVector[i]).arg(powerLimitVector[i]);
+        QString power = QString("%1 W / %2").arg(powerDrawVector[i]).arg(powerLimitVector[i]);
         powerEdit[i]->setText(power);
 
         QString temperature = QString("%1 °C").arg(temperatureVector[i]);

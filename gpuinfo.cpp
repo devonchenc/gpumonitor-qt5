@@ -15,7 +15,7 @@ QVector<int> GPUInfo::memoryTotalVector;
 QVector<int> GPUInfo::memoryUsedVector;
 QVector<int> GPUInfo::temperatureVector;
 QVector<float> GPUInfo::powerDrawVector;
-QVector<float> GPUInfo::powerLimitVector;
+QVector<QString> GPUInfo::powerLimitVector;
 QVector<int> GPUInfo::gpuUtilVector;
 QVector<int> GPUInfo::memoryUtilVector;
 GPUInfo::GC GPUInfo::gc;
@@ -155,9 +155,7 @@ void GPUInfo::updateInfo()
         if (pos != -1)
         {
             pos = str.indexOf(":") + 2;
-            int lastPos = str.lastIndexOf(' ');
-            float powerLimit = str.mid(pos, lastPos - pos).toFloat();
-            powerLimitVector[n] = powerLimit;
+            powerLimitVector[n] = str.mid(pos);
         }
 
         // GPU utilization

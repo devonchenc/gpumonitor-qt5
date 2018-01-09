@@ -16,7 +16,7 @@ public:
     static QVector<int>& getMemoryUsedlVector()     { return memoryUsedVector; }
     static QVector<int>& getTemperatureVector()     { return temperatureVector; }
     static QVector<float>& getPowerDrawVector()     { return powerDrawVector; }
-    static QVector<float>& getPowerLimitVector()    { return powerLimitVector; }
+    static QVector<QString>& getPowerLimitVector()  { return powerLimitVector; }
     static QVector<int>& getGPUUtilVector()         { return gpuUtilVector; }
     static QVector<int>& getMemoryUtilVector()      { return memoryUtilVector; }
 
@@ -39,7 +39,7 @@ private:
     static QVector<int> memoryUsedVector;
     static QVector<int> temperatureVector;
     static QVector<float> powerDrawVector;
-    static QVector<float> powerLimitVector;
+    static QVector<QString> powerLimitVector;
     static QVector<int> gpuUtilVector;
     static QVector<int> memoryUtilVector;
 
