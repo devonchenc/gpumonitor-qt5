@@ -3,6 +3,10 @@
 #include <QVector>
 #include <QStringList>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 GPUInfo* GPUInfo::instance = Q_NULLPTR;
 int GPUInfo::gpuNum = 0;
 QStringList GPUInfo::gpuName;
@@ -185,10 +189,59 @@ QStringList GPUInfo::getCommandOutput()
 {
     QStringList strVector;
 #ifdef _WIN32
-    FILE* pp = _popen("C:\\\"Program Files\"\\\"NVIDIA Corporation\"\\NVSMI\\nvidia-smi.exe -q", "r");
+    SECURITY_ATTRIBUTES sa = { 0 };
+    sa.nLength = sizeof(sa);
+    sa.bInheritHandle = TRUE;
+    sa.lpSecurityDescriptor = NULL;
+
+    // Create pipe for standard output redirection.
+    HANDLE hPipeOutputRead = NULL;
+    HANDLE hPipeOutputWrite = NULL;
+    CreatePipe(&hPipeOutputRead, &hPipeOutputWrite, &sa, 0);
+
+    // Make child process use hPipeOutputWrite as standard out, and make sure it does not show on screen.
+    STARTUPINFO si = { 0 };
+    si.cb = sizeof(si);
+    si.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
+    si.wShowWindow = SW_HIDE;
+    si.hStdInput = NULL;
+    si.hStdOutput = hPipeOutputWrite;
+    si.hStdError = hPipeOutputWrite;
+    PROCESS_INFORMATION pi = { 0 };
+
+    // Create nvidia-smi.exe as child process
+    TCHAR szCmd[256] = L"C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe -q";
+    CreateProcess(NULL, szCmd, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
+    CloseHandle(hPipeOutputWrite);
+
+    char szBuffer[512];
+    QString totalOutput;
+    while (TRUE)
+    {
+        DWORD dwNumberOfBytesRead = 0;
+        BOOL bTest = ReadFile(hPipeOutputRead, &szBuffer, 512 - 1, &dwNumberOfBytesRead, NULL);
+        if (!bTest)
+        {
+            break;
+        }
+
+        szBuffer[dwNumberOfBytesRead] = 0;  // null terminate
+
+        // Concatenate output string
+        totalOutput += szBuffer;
+    }
+
+    // Wait for shell to finish.
+    WaitForSingleObject(pi.hProcess, 2000);
+
+    // Close all remaining handles
+    CloseHandle(pi.hProcess);
+    CloseHandle(hPipeOutputRead);
+
+    // Split the output string by line break
+    strVector = totalOutput.split("\r\n");
 #else
     FILE* pp = popen("nvidia-smi -q", "r");
-#endif
     if (!pp)
         return strVector;
 
@@ -202,9 +255,6 @@ QStringList GPUInfo::getCommandOutput()
         }
         strVector.append(tmp);
     }
-#ifdef _WIN32
-    _pclose(pp);
-#else
     pclose(pp);
 #endif
 

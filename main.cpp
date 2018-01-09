@@ -7,6 +7,8 @@
 
 int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+
     if (GPUInfo::getInstance()->getGPUNum() == 0)
     {
         QMessageBox::critical(Q_NULLPTR, QObject::tr("GPUMonitor"),
@@ -14,7 +16,6 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    QApplication a(argc, argv);
     if (!QSystemTrayIcon::isSystemTrayAvailable())
     {
         QMessageBox::critical(Q_NULLPTR, QObject::tr("GPUMonitor"),
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Make sure only run one application instance
     QSharedMemory shared("GPUMonitor");
     if (shared.attach())
     {
