@@ -93,6 +93,7 @@ void MainWindow::updateControl()
     const QVector<int> gpuUtilVector = GPUInfo::getInstance()->getGPUUtilVector();
     const QVector<int> memoryUtilVector = GPUInfo::getInstance()->getMemoryUtilVector();
 
+    QString toolTip;
     for (int i = 0; i < gpuNum; i++)
     {
         QString memory = QString("%1 MB / %2 MB").arg(memoryUsedVector[i]).arg(memoryTotalVector[i]);
@@ -112,7 +113,10 @@ void MainWindow::updateControl()
                                     arg(gpuUtilVector[i]).
                                     arg(temperatureVector[i]);
         gpuInfoAction[i]->setText(actionText);
+        toolTip += actionText + "\n";
     }
+
+    trayIcon->setToolTip(toolTip);
 }
 
 void MainWindow::createIconGroupBox()
