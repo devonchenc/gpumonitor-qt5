@@ -29,7 +29,7 @@ MainWindow::MainWindow()
     createTrayIcon();
 
     setWindowTitle(tr("NVIDIA GPU Monitor"));
-    resize(500, 150);
+    resize(420, 400);
 
     if (gpuNum > 0)
     {
@@ -108,9 +108,9 @@ void MainWindow::updateControl()
         QString temperature = QString("%1 °C").arg(temperatureVector[i]);
         temperatureEdit[i]->setText(temperature);
 
-        QString actionText = QString("GPU %1 :  %2 MB / %3 MB,  %4 %,  %5 °C").arg(i).
-                                    arg(memoryUsedVector[i]).arg(memoryTotalVector[i]).
+        QString actionText = QString("GPU %1 : GPU %2%, Mem %3%, %4 °C").arg(i).
                                     arg(gpuUtilVector[i]).
+                                    arg(memoryUtilVector[i]).
                                     arg(temperatureVector[i]);
         gpuInfoAction[i]->setText(actionText);
         toolTip += actionText + "\n";
@@ -140,36 +140,38 @@ void MainWindow::createIconGroupBox()
     {
         gpuGroupBox[i] = new QGroupBox(tr("GPU %1 : %2   ").arg(i).arg(gpuName[i]));
 
-        memoryLabel[i] = new QLabel(tr("Memory Usage:"));
-        memoryEdit[i] = new QLineEdit;
-        memoryEdit[i]->setMinimumWidth(150);
-        memoryEdit[i]->setMaximumWidth(150);
-        memoryEdit[i]->setFocusPolicy(Qt::NoFocus);
         gpuUtilLabel[i] = new QLabel(tr("GPU Util:"));
         gpuUtilEdit[i] = new QLineEdit;
         QSize size = gpuUtilEdit[i]->minimumSizeHint();
         gpuUtilEdit[i]->setMaximumWidth(size.width() + 10);
         gpuUtilEdit[i]->setFocusPolicy(Qt::NoFocus);
-        powerLabel[i] = new QLabel(tr("Power:"));
-        powerEdit[i] = new QLineEdit;
-        powerEdit[i]->setMinimumWidth(150);
-        powerEdit[i]->setMaximumWidth(150);
-        powerEdit[i]->setFocusPolicy(Qt::NoFocus);
+        memoryLabel[i] = new QLabel(tr("Memory Usage:"));
+        memoryEdit[i] = new QLineEdit;
+        memoryEdit[i]->setMinimumWidth(140);
+        memoryEdit[i]->setMaximumWidth(140);
+        memoryEdit[i]->setFocusPolicy(Qt::NoFocus);
+
         temperatureLabel[i] = new QLabel(tr("Temperature:"));
         temperatureEdit[i] = new QLineEdit;
         size = temperatureEdit[i]->minimumSizeHint();
         temperatureEdit[i]->setMaximumWidth(size.width() + 10);
         temperatureEdit[i]->setFocusPolicy(Qt::NoFocus);
+        powerLabel[i] = new QLabel(tr("Power:"));
+        powerEdit[i] = new QLineEdit;
+        powerEdit[i]->setMinimumWidth(140);
+        powerEdit[i]->setMaximumWidth(140);
+        powerEdit[i]->setFocusPolicy(Qt::NoFocus);
 
         QGridLayout *infoLayout = new QGridLayout;
-        infoLayout->addWidget(memoryLabel[i], 0, 0);
-        infoLayout->addWidget(memoryEdit[i], 0, 1, 1, 2);
-        infoLayout->addWidget(gpuUtilLabel[i], 0, 3, 1, 1);
-        infoLayout->addWidget(gpuUtilEdit[i], 0, 4, 1, 1);
-        infoLayout->addWidget(powerLabel[i], 1, 0);
-        infoLayout->addWidget(powerEdit[i], 1, 1, 1, 2);
-        infoLayout->addWidget(temperatureLabel[i], 1, 3, 1, 1);
-        infoLayout->addWidget(temperatureEdit[i], 1, 4, 1, 1);
+        infoLayout->addWidget(gpuUtilLabel[i], 0, 0, 1, 1);
+        infoLayout->addWidget(gpuUtilEdit[i], 0, 1, 1, 2);
+        infoLayout->addWidget(memoryLabel[i], 0, 3, 1, 1);
+        infoLayout->addWidget(memoryEdit[i], 0, 4, 1, 2);
+
+        infoLayout->addWidget(temperatureLabel[i], 1, 0, 1, 1);
+        infoLayout->addWidget(temperatureEdit[i], 1, 1, 1, 2);
+        infoLayout->addWidget(powerLabel[i], 1, 3, 1, 1);
+        infoLayout->addWidget(powerEdit[i], 1, 4, 1, 2);
 
         gpuGroupBox[i]->setLayout(infoLayout);
     }
