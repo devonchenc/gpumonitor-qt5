@@ -77,6 +77,7 @@ void GPUInfo::updateInfo()
     QStringList strVector = getCommandOutput();
 
     int memoryLine, temperatureLine, powerLine, utilizationLine;
+    memoryLine = temperatureLine = powerLine = utilizationLine = 0;
     for (int n = 0; n < gpuNum; n++)
     {
         int upperLimit;
