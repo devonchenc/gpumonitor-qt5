@@ -172,7 +172,7 @@ void GPUInfo::updateInfo()
 
         // Memory utilization
         str = strVector[utilizationLine + 2];
-        pos = str.indexOf("Gpu");
+        pos = str.indexOf("Memory");
         if (pos != -1)
         {
             pos = str.indexOf(":") + 2;

@@ -147,8 +147,6 @@ void MainWindow::createIconGroupBox()
         gpuUtilEdit[i]->setFocusPolicy(Qt::NoFocus);
         memoryLabel[i] = new QLabel(tr("Memory Usage:"));
         memoryEdit[i] = new QLineEdit;
-        memoryEdit[i]->setMinimumWidth(140);
-        memoryEdit[i]->setMaximumWidth(140);
         memoryEdit[i]->setFocusPolicy(Qt::NoFocus);
 
         temperatureLabel[i] = new QLabel(tr("Temperature:"));
@@ -158,8 +156,6 @@ void MainWindow::createIconGroupBox()
         temperatureEdit[i]->setFocusPolicy(Qt::NoFocus);
         powerLabel[i] = new QLabel(tr("Power:"));
         powerEdit[i] = new QLineEdit;
-        powerEdit[i]->setMinimumWidth(140);
-        powerEdit[i]->setMaximumWidth(140);
         powerEdit[i]->setFocusPolicy(Qt::NoFocus);
 
         QGridLayout *infoLayout = new QGridLayout;
