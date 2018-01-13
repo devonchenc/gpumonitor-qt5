@@ -29,7 +29,7 @@ MainWindow::MainWindow()
     createTrayIcon();
 
     setWindowTitle(tr("NVIDIA GPU Monitor"));
-    resize(420, 400);
+    resize(500, 110 * gpuNum);
 
     if (gpuNum > 0)
     {
