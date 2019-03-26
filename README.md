@@ -1,7 +1,7 @@
-GPUMonitor
+GPUMonitor-Qt5
 ==========
 
-This application is used to display NVIDIA GPUs' information, including device memory usage, GPU utilization, power and temperature.
+This application is written by C++/Qt5 and is used to display NVIDIA GPUs' information, including device memory usage, GPU utilization, power and temperature.
 
 ![Software interface](GUI.png)
 
