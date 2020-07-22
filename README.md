@@ -10,4 +10,4 @@ These status can also be seen in the system tray and right-click menu.
 ![SystemTray](SystemTray.png)
 ![ContextMenu](ContextMenu.png)
 
-These useful information of GPU comes from **'nvidia-smi'** command which is opened by **popen()** function. So, it dose **NOT** support **Interl** and **AMD** graphics card.
+These useful information of GPU comes from **'nvidia-smi'** command which is opened by **popen()** function. So, it does **NOT** support **Interl** and **AMD** graphics card.
