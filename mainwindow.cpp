@@ -11,17 +11,18 @@
 #include "gpuinfo.h"
 
 MainWindow::MainWindow()
-    : gpuGroupBox(Q_NULLPTR)
-    , memoryLabel(Q_NULLPTR)
-    , memoryEdit(Q_NULLPTR)
-    , temperatureLabel(Q_NULLPTR)
-    , temperatureEdit(Q_NULLPTR)
-    , powerLabel(Q_NULLPTR)
-    , powerEdit(Q_NULLPTR)
-    , gpuUtilLabel(Q_NULLPTR)
-    , gpuUtilEdit(Q_NULLPTR)
+    : gpuGroupBox(nullptr)
+    , memoryLabel(nullptr)
+    , memoryEdit(nullptr)
+    , temperatureLabel(nullptr)
+    , temperatureEdit(nullptr)
+    , powerLabel(nullptr)
+    , powerEdit(nullptr)
+    , gpuUtilLabel(nullptr)
+    , gpuUtilEdit(nullptr)
     , gpuNum(0)
 {
+    connect(GPUInfo::getInstance(), &GPUInfo::infoUpdated, this, &MainWindow::updateControl);
     gpuNum = GPUInfo::getInstance()->getGPUNum();
     createIconGroupBox();
 
@@ -34,12 +35,15 @@ MainWindow::MainWindow()
     if (gpuNum > 0)
     {
         updateControl();
-        timerID = startTimer(1000);
+        GPUInfo::getInstance()->start();
     }
 }
 
 MainWindow::~MainWindow()
 {
+    GPUInfo::getInstance()->exit();
+    GPUInfo::getInstance()->wait();
+
     if (gpuGroupBox)
     {
         delete [] gpuGroupBox;
@@ -67,16 +71,6 @@ MainWindow::~MainWindow()
     if (powerEdit)
     {
         delete [] powerEdit;
-    }
-}
-
-void MainWindow::timerEvent(QTimerEvent *event)
-{
-    if (event->timerId() == timerID)
-    {
-        GPUInfo::getInstance()->updateInfo();
-
-        updateControl();
     }
 }
 

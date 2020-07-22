@@ -19,16 +19,12 @@ public:
     MainWindow();
     ~MainWindow();
 
-protected:
-    void timerEvent(QTimerEvent *event);
-
 private slots:
     void trayActivated(QSystemTrayIcon::ActivationReason reason);
     void showTopmost();
-
-private:
     void updateControl();
 
+private:
     void createIconGroupBox();
     void createActions();
     void createTrayIcon();
@@ -52,8 +48,6 @@ private:
     QMenu *trayIconMenu;
 
     int gpuNum;
-
-    int timerID;
 };
 
 #endif // MAINWINDOW_H

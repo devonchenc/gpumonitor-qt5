@@ -11,14 +11,14 @@ int main(int argc, char *argv[])
 
     if (GPUInfo::getInstance()->getGPUNum() == 0)
     {
-        QMessageBox::critical(Q_NULLPTR, QObject::tr("GPUMonitor"),
+        QMessageBox::critical(nullptr, QObject::tr("GPUMonitor"),
                               QObject::tr("Couldn't detect any NVIDIA GPU on this system."));
         return 1;
     }
 
     if (!QSystemTrayIcon::isSystemTrayAvailable())
     {
-        QMessageBox::critical(Q_NULLPTR, QObject::tr("GPUMonitor"),
+        QMessageBox::critical(nullptr, QObject::tr("GPUMonitor"),
                               QObject::tr("Couldn't detect any system tray on this system."));
         return 1;
     }

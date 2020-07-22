@@ -2,12 +2,13 @@
 
 #include <QVector>
 #include <QStringList>
+#include <QDebug>
 
 #ifdef _WIN32
 #include <Windows.h>
 #endif
 
-GPUInfo* GPUInfo::instance = Q_NULLPTR;
+GPUInfo* GPUInfo::instance = nullptr;
 int GPUInfo::gpuNum = 0;
 QStringList GPUInfo::gpuName;
 QVector<int> GPUInfo::gpuNameLineVector;
@@ -18,17 +19,26 @@ QVector<float> GPUInfo::powerDrawVector;
 QVector<QString> GPUInfo::powerLimitVector;
 QVector<int> GPUInfo::gpuUtilVector;
 QVector<int> GPUInfo::memoryUtilVector;
+QTimer* GPUInfo::timer = nullptr;
 GPUInfo::GC GPUInfo::gc;
 
 GPUInfo* GPUInfo::getInstance()
 {
-    if (instance == Q_NULLPTR)
+    if (instance == nullptr)
     {
         instance = new GPUInfo;
-        getInfo();
-        updateInfo();
+        instance->getInfo();
+        instance->updateInfo();
     }
     return instance;
+}
+
+void GPUInfo::run()
+{
+    timer = new QTimer;
+    connect(timer, &QTimer::timeout, this, &GPUInfo::updateInfo, Qt::DirectConnection);
+    timer->start(1000);
+    exec();
 }
 
 int GPUInfo::getInfo()
@@ -181,6 +191,8 @@ void GPUInfo::updateInfo()
             memoryUtilVector[n] = memoryUtil;
         }
     }
+
+    emit infoUpdated();
 }
 
 // Get Nvidia-smi output

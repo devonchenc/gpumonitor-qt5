@@ -1,14 +1,16 @@
 #ifndef GPUINFO_H
 #define GPUINFO_H
 
+#include <QThread>
+#include <QTimer>
 #include <QStringList>
 
-class GPUInfo
+class GPUInfo : public QThread
 {
+    Q_OBJECT
+
 public:
     static GPUInfo* getInstance();
-
-    static void updateInfo();
 
     static int getGPUNum()                          { return gpuNum; }
     static const QStringList& getGPUName()          { return gpuName; }
@@ -20,13 +22,22 @@ public:
     static QVector<int>& getGPUUtilVector()         { return gpuUtilVector; }
     static QVector<int>& getMemoryUtilVector()      { return memoryUtilVector; }
 
+signals:
+    void infoUpdated();
+
+protected:
+    void run() override;
+
 private:
-    static int getInfo();
+    int getInfo();
+
+    void updateInfo();
 
     // Get Nvidia-smi output
     static QStringList getCommandOutput();
 
-    GPUInfo(){}
+    GPUInfo(QObject *parent = nullptr) : QThread(parent){}
+    ~GPUInfo(){if(timer){timer->deleteLater();}}
 
 private:
     // instance pointer
@@ -43,16 +54,18 @@ private:
     static QVector<int> gpuUtilVector;
     static QVector<int> memoryUtilVector;
 
+    static QTimer* timer;
+
 private:
     class GC // Garbage collection
     {
     public:
         ~GC()
         {
-            if (instance != Q_NULLPTR)
+            if (instance != nullptr)
             {
                 delete instance;
-                instance = NULL;
+                instance = nullptr;
             }
         }
     };
