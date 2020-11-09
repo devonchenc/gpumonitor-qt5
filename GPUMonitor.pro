@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    gpuinfo.cpp
+        gpuinfo.cpp \
+        settingsdialog.cpp
 
 HEADERS += \
         mainwindow.h \
-    gpuinfo.h
+        gpuinfo.h \
+        settingsdialog.h
 
 RESOURCES = GPUMonitor.qrc
 

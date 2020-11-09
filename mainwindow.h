@@ -21,6 +21,7 @@ public:
 
 private slots:
     void trayActivated(QSystemTrayIcon::ActivationReason reason);
+    void settings();
     void showTopmost();
     void updateControl();
 
@@ -40,6 +41,7 @@ private:
     QLineEdit **gpuUtilEdit;
 
     QAction **gpuInfoAction;
+    QAction *settingsAction;
     QAction *restoreAction;
     QAction *topmostAction;
     QAction *quitAction;

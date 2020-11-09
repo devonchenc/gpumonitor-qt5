@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QSize>
 #include "gpuinfo.h"
+#include "settingsdialog.h"
 
 MainWindow::MainWindow()
     : gpuGroupBox(nullptr)
@@ -43,35 +44,6 @@ MainWindow::~MainWindow()
 {
     GPUInfo::getInstance()->exit();
     GPUInfo::getInstance()->wait();
-
-    if (gpuGroupBox)
-    {
-        delete [] gpuGroupBox;
-    }
-    if (memoryLabel)
-    {
-        delete [] memoryLabel;
-    }
-    if (memoryEdit)
-    {
-        delete [] memoryEdit;
-    }
-    if (temperatureLabel)
-    {
-        delete [] temperatureLabel;
-    }
-    if (temperatureEdit)
-    {
-        delete [] temperatureEdit;
-    }
-    if (powerLabel)
-    {
-        delete [] powerLabel;
-    }
-    if (powerEdit)
-    {
-        delete [] powerEdit;
-    }
 }
 
 void MainWindow::updateControl()
@@ -102,7 +74,7 @@ void MainWindow::updateControl()
         QString temperature = QString("%1 °C").arg(temperatureVector[i]);
         temperatureEdit[i]->setText(temperature);
 
-        QString actionText = QString("GPU %1 : GPU %2%, Mem %3%, %4 °C").arg(i).
+        QString actionText = QString("%1 : GPU %2%, Mem %3%, %4 °C").arg(i).
                                     arg(gpuUtilVector[i]).
                                     arg(memoryUtilVector[i]).
                                     arg(temperatureVector[i]);
@@ -186,6 +158,9 @@ void MainWindow::createActions()
         gpuInfoAction[i] = new QAction(tr(" "), this);
     }
 
+    settingsAction = new QAction(tr("&Settings"), this);
+    connect(settingsAction, &QAction::triggered, this, &MainWindow::settings);
+
     restoreAction = new QAction(tr("&Restore Window"), this);
     connect(restoreAction, &QAction::triggered, this, &QWidget::showNormal);
 
@@ -208,6 +183,7 @@ void MainWindow::createTrayIcon()
         trayIconMenu->addAction(gpuInfoAction[i]);
     }
     trayIconMenu->addSeparator();
+    trayIconMenu->addAction(settingsAction);
     trayIconMenu->addAction(restoreAction);
     trayIconMenu->addAction(topmostAction);
     trayIconMenu->addSeparator();
@@ -235,6 +211,12 @@ void MainWindow::trayActivated(QSystemTrayIcon::ActivationReason reason)
     default:
         ;
     }
+}
+
+void MainWindow::settings()
+{
+    SettingsDialog dlg;
+    dlg.exec();
 }
 
 void MainWindow::showTopmost()

@@ -2,7 +2,8 @@
 
 #include <QVector>
 #include <QStringList>
-#include <QDebug>
+#include <QCoreApplication>
+#include <QSettings>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -220,8 +221,13 @@ QStringList GPUInfo::getCommandOutput()
     si.hStdError = hPipeOutputWrite;
     PROCESS_INFORMATION pi = { 0 };
 
-    // Create nvidia-smi.exe as child process
-    TCHAR szCmd[256] = L"C:\\Program Files\\NVIDIA Corporation\\NVSMI\\nvidia-smi.exe -q";
+    // Create nvidia-smi.exe as a child process
+    QSettings settings(QCoreApplication::applicationDirPath() + "/settings.ini", QSettings::IniFormat);
+    QString path = settings.value("Path/NV", "C:/Program Files/NVIDIA Corporation/NVSMI/nvidia-smi.exe").toString();
+    QString command = path + " -q";
+    TCHAR szCmd[256];
+    memset(szCmd, 0, sizeof(TCHAR) * 256);
+    command.toWCharArray(szCmd);
     CreateProcess(NULL, szCmd, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
     CloseHandle(hPipeOutputWrite);
 
